@@ -11,7 +11,7 @@ catkin_python_setup()
 add_definitions("-Wno-pragmas -fno-strict-aliasing -Wall -Wl,--no-undefined")
 
 find_package(Boost REQUIRED system filesystem serialization)
-find_package(Eigen REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(OpenCV REQUIRED)
 
 include_directories(SYSTEM ${BOOST_INCLUDE_DIRS}
