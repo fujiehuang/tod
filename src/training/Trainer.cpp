@@ -43,15 +43,15 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#if CV_VERSION_MAJOR == 3
+//#if CV_VERSION_MAJOR == 3
 #include <opencv2/rgbd.hpp>
 using cv::rgbd::depthTo3dSparse;
 using cv::rgbd::rescaleDepth;
-#else
-#include <opencv2/rgbd/rgbd.hpp>
-using cv::depthTo3dSparse;
-using cv::rescaleDepth;
-#endif
+//#else
+//#include <opencv2/rgbd/rgbd.hpp>
+//using cv::depthTo3dSparse;
+//using cv::rescaleDepth;
+//#endif
 
 #include <object_recognition_core/common/types_eigen.h>
 #include <object_recognition_core/db/db.h>
@@ -76,7 +76,7 @@ void rescale_depth(const cv::Mat depth_in, const cv::Size & isize,
   //resize into the subregion of the correct aspect ratio
   cv::Mat subregion(output.rowRange(0, dsize.height * factor));
   //use nearest neighbor to prevent discontinuities causing bogus depth.
-  cv::resize(depth, subregion, subregion.size(), CV_INTER_NN);
+  cv::resize(depth, subregion, subregion.size(), cv::INTER_NEAREST);
   depth_out = output;
 }
 
@@ -141,13 +141,13 @@ public:
       cv::Mat points, descriptors;
       std::vector<cv::KeyPoint> keypoints;
       // TODO actually use the params and do not force ORB
-#if CV_VERSION_MAJOR == 3
+//#if CV_VERSION_MAJOR == 3
       cv::Ptr<cv::DescriptorExtractor> orb = cv::ORB::create();
       orb->detectAndCompute(obs.image, obs.mask, keypoints, descriptors);
-#else
-      cv::ORB orb;
-      orb(obs.image, obs.mask, keypoints, descriptors);
-#endif
+//#else
+//      cv::ORB orb;
+//      orb(obs.image, obs.mask, keypoints, descriptors);
+//#endif
 
       // Rescale the depth
       cv::Mat depth;
